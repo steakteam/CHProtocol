@@ -35,9 +35,9 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
     @Override
     public boolean match(Map<String, Construct> prefilters) throws PrefilterNonMatchException {
         PacketType type = event.getPacketType();
-        Prefilters.match(prefilters, "protocol", type.getProtocol().getPacketName(), Prefilters.PrefilterType.STRING_MATCH);
-        Prefilters.match(prefilters, "side", type.getSender().getPacketName(), Prefilters.PrefilterType.STRING_MATCH);
-        Prefilters.match(prefilters, "name", type.name(), Prefilters.PrefilterType.STRING_MATCH);
+        Prefilters.match(prefilters, "protocol", type.getProtocol().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
+        Prefilters.match(prefilters, "side", type.getSender().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
+        Prefilters.match(prefilters, "name", type.name().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
         return true;
     }
 
@@ -45,10 +45,10 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
     public void write(Map<String, Construct> map) {
         PacketType type = event.getPacketType();
         Target target = Target.UNKNOWN;
-        map.put("protocol", new CString(type.getProtocol().getPacketName(), target));
-        map.put("side", new CString(type.getSender().getPacketName(), target));
-        map.put("name", new CString(type.name(), target));
-        map.put("data", PacketWrapper.of(event.getPacket(), target));
+        map.put("protocol", new CString(type.getProtocol().getPacketName().toUpperCase(), target));
+        map.put("side", new CString(type.getSender().getPacketName().toUpperCase(), target));
+        map.put("name", new CString(type.name().toUpperCase(), target));
+        map.put("packet", PacketWrapper.of(event.getPacket(), target));
     }
 
     @Override
