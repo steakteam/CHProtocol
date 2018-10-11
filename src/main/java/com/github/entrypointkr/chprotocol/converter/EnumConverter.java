@@ -22,8 +22,8 @@ public class EnumConverter implements DuplexConverter {
             try {
                 return Enum.valueOf(to, construct.val());
             } catch (IllegalArgumentException ex) {
-                Enum[] enums = (Enum[]) ReflectionUtils.invokeMethod(to, "values");
-                throw new IllegalArgumentException(String.format("%s has elements %s",
+                Enum[] enums = (Enum[]) ReflectionUtils.invokeMethod(to, null, "values");
+                throw new IllegalArgumentException(String.format("%s has elements [%s]",
                         to.getSimpleName(), StringUtils.join(enums, ", ")));
             }
         }

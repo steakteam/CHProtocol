@@ -25,7 +25,7 @@ public class ChatComponentConverter implements DuplexConverter {
                 return WrappedChatComponent.fromText(contents).getHandle();
             }
         }
-        throw new IllegalStateException();
+        return null;
     }
 
     @Override

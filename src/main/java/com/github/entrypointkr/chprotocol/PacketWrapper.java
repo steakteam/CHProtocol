@@ -30,8 +30,8 @@ public class PacketWrapper extends Construct {
             .register(Enum.class, EnumConverter.INSTANCE)
             .register(MinecraftReflection.getChatComponentTextClass(), ChatComponentConverter.INSTANCE);
     private static ConstructConverter constructConverter = new CombinedConstructConverter()
-            .register(Construct.class, BasicConverter.INSTANCE)
             .register(Construct.class, EnumConverter.INSTANCE)
+            .register(Construct.class, BasicConverter.INSTANCE)
             .register(CString.class, ChatComponentConverter.INSTANCE);
     public final PacketContainer packet;
 

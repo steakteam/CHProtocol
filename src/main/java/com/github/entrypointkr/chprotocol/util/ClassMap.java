@@ -2,6 +2,7 @@ package com.github.entrypointkr.chprotocol.util;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -27,21 +28,54 @@ public class ClassMap<V> implements Map<Class, V> {
         this.map = map;
     }
 
-    public V get(Class key) {
+    public V find(Class key) {
         V data = map.get(key);
         if (data != null) {
             return data;
         } else {
             Class parent = key.getSuperclass();
             if (parent != null) {
-                return get(parent);
+                return find(parent);
             }
         }
         return null;
     }
 
-    public Optional<V> getOptional(Class key) {
-        return Optional.ofNullable(get(key));
+    public Optional<V> findOptional(Class key) {
+        return Optional.ofNullable(find(key));
+    }
+
+    public Iterator<V> findIterator(Class key) {
+        return new ClassIterator(key);
+    }
+
+    class ClassIterator implements Iterator<V> {
+        private Class key;
+        private V find;
+
+        public ClassIterator(Class key) {
+            this.key = key;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (key != null) {
+                V ret = get(key);
+                key = key.getSuperclass();
+                if (ret != null) {
+                    find = ret;
+                    return true;
+                } else {
+                    return hasNext();
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public V next() {
+            return find;
+        }
     }
 
     @Override
