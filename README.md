@@ -9,8 +9,8 @@ packet_create(protocol, side, name)
 packet_read([packet], index)
 ### packet_write
 packet_write([packet], index, value)
-### packet_send
-packet_send([player], packet)
+### send_packet
+send_packet([player], packet)
 ### packet_info
 packet_info([packet])
 ### all_packets
@@ -32,7 +32,7 @@ bind(player_join, null, null, @e) {
 bind(packet_event, null, array(name: CHAT), @e) {
     @info = packet_read(@e[packet], 2)
     if (@info == 'GAME_INFO') {
-        packet_write(@e[packet], 0, colorize('&cHello CHProtocol!'))
+        packet_write(0, colorize('&cHello CHProtocol!'))
     }
 }
 ```
