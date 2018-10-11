@@ -49,7 +49,7 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
         map.put("protocol", new CString(type.getProtocol().getPacketName().toUpperCase(), target));
         map.put("side", new CString(type.getSender().getPacketName().toUpperCase(), target));
         map.put("name", new CString(type.name().toUpperCase(), target));
-        map.put("player", new CString(event.getPlayer().getName(), target));
+        map.put("player", new CString(event.getPlayer().getName().toLowerCase(), target));
         map.put("packet", PacketWrapper.of(event.getPacket(), target));
     }
 
