@@ -6,6 +6,8 @@ import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 
+import java.lang.reflect.Type;
+
 /**
  * Created by JunHyeong on 2018-10-11
  */
@@ -16,7 +18,7 @@ public class ChatComponentConverter implements DuplexConverter {
     }
 
     @Override
-    public Object convert(Construct construct, Class to) {
+    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
         if (to == MinecraftReflection.getIChatBaseComponentClass()) {
             String contents = construct.val();
             if (contents.startsWith("{") && contents.endsWith("}")) {
@@ -29,7 +31,7 @@ public class ChatComponentConverter implements DuplexConverter {
     }
 
     @Override
-    public Construct convert(Object object, Target target) {
+    public Construct convert(ObjectConverter ctx, Object object, Target target) {
         WrappedChatComponent component = WrappedChatComponent.fromHandle(object);
         return new CString(component.getJson(), target);
     }

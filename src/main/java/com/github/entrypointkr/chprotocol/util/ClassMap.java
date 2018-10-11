@@ -61,6 +61,13 @@ public class ClassMap<V> implements Map<Class, V> {
         public boolean hasNext() {
             if (key != null) {
                 V ret = get(key);
+                if (ret == null) {
+                    for (Class itf : key.getInterfaces()) {
+                        if ((ret = get(itf)) != null) {
+                            break;
+                        }
+                    }
+                }
                 key = key.getSuperclass();
                 if (ret != null) {
                     find = ret;

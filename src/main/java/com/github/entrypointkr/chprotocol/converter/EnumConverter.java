@@ -6,6 +6,8 @@ import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.Type;
+
 /**
  * Created by JunHyeong on 2018-10-11
  */
@@ -17,7 +19,7 @@ public class EnumConverter implements DuplexConverter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Object convert(Construct construct, Class to) {
+    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
         if (Enum.class.isAssignableFrom(to)) {
             try {
                 return Enum.valueOf(to, construct.val());
@@ -31,7 +33,7 @@ public class EnumConverter implements DuplexConverter {
     }
 
     @Override
-    public Construct convert(Object object, Target target) {
+    public Construct convert(ObjectConverter ctx, Object object, Target target) {
         return new CString(object.toString(), target);
     }
 }

@@ -38,6 +38,7 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
         Prefilters.match(prefilters, "protocol", type.getProtocol().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
         Prefilters.match(prefilters, "side", type.getSender().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
         Prefilters.match(prefilters, "name", type.name().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
+        Prefilters.match(prefilters, "player", event.getPlayer().getName().toLowerCase(), Prefilters.PrefilterType.STRING_MATCH);
         return true;
     }
 
@@ -48,6 +49,7 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
         map.put("protocol", new CString(type.getProtocol().getPacketName().toUpperCase(), target));
         map.put("side", new CString(type.getSender().getPacketName().toUpperCase(), target));
         map.put("name", new CString(type.name().toUpperCase(), target));
+        map.put("player", new CString(event.getPlayer().getName(), target));
         map.put("packet", PacketWrapper.of(event.getPacket(), target));
     }
 

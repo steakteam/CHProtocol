@@ -9,8 +9,8 @@ import com.laytonsmith.core.constructs.Target;
  */
 public class CombinedObjectConverter extends CombinedConverter<ObjectConverter, CombinedObjectConverter> implements ObjectConverter {
     @Override
-    public Construct convert(Object object, Target target) {
+    public Construct convert(ObjectConverter ctx, Object object, Target target) {
         Class type = object.getClass();
-        return startConvert(type, converter -> converter.convert(object, target));
+        return startConvert(type, converter -> converter.convert(ctx, object, target));
     }
 }

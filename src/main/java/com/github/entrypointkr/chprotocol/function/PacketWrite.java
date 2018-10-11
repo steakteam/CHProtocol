@@ -35,7 +35,7 @@ public class PacketWrite extends CHProtocolFunction {
         int index = Static.getInt32(args.remove(0), t);
         Construct argument = args.remove(0);
         try {
-            packet.write(index, argument);
+            packet.write(index, argument, t);
         } catch (Exception ex) {
             throw new CREException("Exception was thrown, " + ex, t, ex);
         }

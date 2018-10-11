@@ -5,12 +5,14 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.github.entrypointkr.chprotocol.converter.BasicConverter;
 import com.github.entrypointkr.chprotocol.converter.ChatComponentConverter;
+import com.github.entrypointkr.chprotocol.converter.CollectionConverter;
 import com.github.entrypointkr.chprotocol.converter.CombinedConstructConverter;
 import com.github.entrypointkr.chprotocol.converter.CombinedObjectConverter;
 import com.github.entrypointkr.chprotocol.converter.ConstructConverter;
 import com.github.entrypointkr.chprotocol.converter.EnumConverter;
 import com.github.entrypointkr.chprotocol.converter.ObjectConverter;
 import com.github.entrypointkr.chprotocol.event.CHProtocolBaseEvent;
+import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
@@ -19,6 +21,9 @@ import com.laytonsmith.core.environments.GlobalEnv;
 import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -28,11 +33,14 @@ public class PacketWrapper extends Construct {
     private static ObjectConverter objectConverter = new CombinedObjectConverter()
             .register(Object.class, BasicConverter.INSTANCE)
             .register(Enum.class, EnumConverter.INSTANCE)
-            .register(MinecraftReflection.getChatComponentTextClass(), ChatComponentConverter.INSTANCE);
+            .register(MinecraftReflection.getChatComponentTextClass(), ChatComponentConverter.INSTANCE)
+            .register(Collection.class, CollectionConverter.INSTANCE)
+            .register(Map.class, CollectionConverter.INSTANCE);
     private static ConstructConverter constructConverter = new CombinedConstructConverter()
             .register(Construct.class, EnumConverter.INSTANCE)
             .register(Construct.class, BasicConverter.INSTANCE)
-            .register(CString.class, ChatComponentConverter.INSTANCE);
+            .register(CString.class, ChatComponentConverter.INSTANCE)
+            .register(CArray.class, CollectionConverter.INSTANCE);
     public final PacketContainer packet;
 
     public static ObjectConverter getObjectConverter() {
@@ -83,12 +91,12 @@ public class PacketWrapper extends Construct {
 
     public Construct read(int index, Target target) {
         Object object = packet.getModifier().read(index);
-        return objectConverter.convert(object, target);
+        return objectConverter.convert(objectConverter, object, target);
     }
 
-    public void write(int index, Construct construct) {
+    public void write(int index, Construct construct, Target target) {
         StructureModifier<Object> modifier = packet.getModifier();
-        Class type = modifier.getField(index).getType();
-        modifier.write(index, constructConverter.convert(construct, type));
+        Field field = modifier.getField(index);
+        modifier.write(index, constructConverter.convert(constructConverter, construct, field.getType(), field.getGenericType(), target));
     }
 }

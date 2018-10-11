@@ -18,7 +18,7 @@ all_packets()
 
 ## Events
 ### packet_event
-protocol, side, name, packet
+protocol, side, name, player, packet
 
 ## Example
 ```javascript
