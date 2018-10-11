@@ -25,7 +25,7 @@ import java.util.List;
 public class PacketSend extends CHProtocolFunction {
     @Override
     public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
-        MCPlayer player = args.size() > 0
+        MCPlayer player = args.size() >= 2
                 ? Static.GetPlayer(args.remove(0), t)
                 : Static.getPlayer(env, t);
         PacketWrapper packet = args.size() > 0
@@ -58,7 +58,7 @@ public class PacketSend extends CHProtocolFunction {
     @Override
     public Integer[] numArgs() {
         return new Integer[]{
-                0, 1, 2
+                1, 2
         };
     }
 

@@ -34,7 +34,7 @@ public class PacketRead extends CHProtocolFunction {
                 : PacketWrapper.of(args.remove(0), t);
         int index = Static.getInt32(args.remove(0), t);
         try {
-            return packet.read(index);
+            return packet.read(index, t);
         } catch (Exception ex) {
             throw new CREException("Exception was thrown", t, ex);
         }

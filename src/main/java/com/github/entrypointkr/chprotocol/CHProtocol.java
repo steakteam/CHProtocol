@@ -1,6 +1,5 @@
 package com.github.entrypointkr.chprotocol;
 
-import com.github.entrypointkr.chprotocol.converter.BasicConverter;
 import com.laytonsmith.PureUtilities.SimpleVersion;
 import com.laytonsmith.PureUtilities.Version;
 import com.laytonsmith.commandhelper.CommandHelperPlugin;
@@ -24,7 +23,6 @@ public final class CHProtocol extends AbstractExtension {
     public void onStartup() {
         Validate.isTrue(Bukkit.getPluginManager().isPluginEnabled("ProtocolLib"), "ProtocolLib not found.");
         processor.register();
-        BasicConverter.register();
         Bukkit.getLogger().log(Level.INFO, "Enable CHProtocol " + getVersion());
     }
 

@@ -2,10 +2,16 @@ package com.github.entrypointkr.chprotocol;
 
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.utility.MinecraftReflection;
 import com.github.entrypointkr.chprotocol.converter.BasicConverter;
-import com.github.entrypointkr.chprotocol.converter.ConstructToObject;
-import com.github.entrypointkr.chprotocol.converter.ObjectToConstruct;
+import com.github.entrypointkr.chprotocol.converter.ChatComponentConverter;
+import com.github.entrypointkr.chprotocol.converter.CombinedConstructConverter;
+import com.github.entrypointkr.chprotocol.converter.CombinedObjectConverter;
+import com.github.entrypointkr.chprotocol.converter.ConstructConverter;
+import com.github.entrypointkr.chprotocol.converter.EnumConverter;
+import com.github.entrypointkr.chprotocol.converter.ObjectConverter;
 import com.github.entrypointkr.chprotocol.event.CHProtocolBaseEvent;
+import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
@@ -13,45 +19,36 @@ import com.laytonsmith.core.environments.GlobalEnv;
 import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Created by JunHyeong on 2018-09-20
  */
 public class PacketWrapper extends Construct {
-    private static final Map<Class, ObjectToConstruct> OBJ2CONST = new HashMap<>();
-    private static final Map<Class, ConstructToObject> CONST2OBJ = new HashMap<>();
+    private static ObjectConverter objectConverter = new CombinedObjectConverter()
+            .register(Object.class, BasicConverter.INSTANCE)
+            .register(Enum.class, EnumConverter.INSTANCE)
+            .register(MinecraftReflection.getChatComponentTextClass(), ChatComponentConverter.INSTANCE);
+    private static ConstructConverter constructConverter = new CombinedConstructConverter()
+            .register(Construct.class, BasicConverter.INSTANCE)
+            .register(Construct.class, EnumConverter.INSTANCE)
+            .register(CString.class, ChatComponentConverter.INSTANCE);
     public final PacketContainer packet;
 
-    public static void registerObjectToConstruct(Class type, ObjectToConstruct converter) {
-        OBJ2CONST.put(type, converter);
+    public static ObjectConverter getObjectConverter() {
+        return objectConverter;
     }
 
-    public static void registerConstructToObject(Class type, ConstructToObject converter) {
-        CONST2OBJ.put(type, converter);
+    public static void setObjectConverter(ObjectConverter objectConverter) {
+        PacketWrapper.objectConverter = Objects.requireNonNull(objectConverter);
     }
 
-    public static <T> Optional<T> getFromClassKey(Map<Class, T> map, Class type) {
-        T data = map.get(type);
-        if (data != null) {
-            return Optional.of(data);
-        } else {
-            Class parent = type.getSuperclass();
-            if (parent != null) {
-                return getFromClassKey(map, parent);
-            }
-        }
-        return Optional.empty();
+    public static ConstructConverter getConstructConverter() {
+        return constructConverter;
     }
 
-    public static Optional<ObjectToConstruct> getObjectToConstruct(Class type) {
-        return getFromClassKey(OBJ2CONST, type);
-    }
-
-    public static Optional<ConstructToObject> getConstructToObject(Class type) {
-        return getFromClassKey(CONST2OBJ, type);
+    public static void setConstructConverter(ConstructConverter constructConverter) {
+        PacketWrapper.constructConverter = Objects.requireNonNull(constructConverter);
     }
 
     public static PacketWrapper of(PacketContainer packet, Target t) {
@@ -84,22 +81,14 @@ public class PacketWrapper extends Construct {
         return true;
     }
 
-    public Construct read(int index) throws Exception {
-//        Object object = packet.getModifier().read(index);
-//        return OBJ2CONST.convert(object);
-//        return getObjectToConstruct(object.getClass())
-//                .orElseThrow(() -> new Exception("Unsupported read type: " + object.getClass()))
-//                .convert(object);
-        return null;
+    public Construct read(int index, Target target) {
+        Object object = packet.getModifier().read(index);
+        return objectConverter.convert(object, target);
     }
 
-    public void write(int index, Construct construct) throws Exception {
-//        StructureModifier<Object> modifier = packet.getModifier();
-//        Class type = modifier.getField(index).getType();
-//        modifier.write(index, CONST2OBJ.convert(construct, type));
-//        Object converted = getConstructToObject(construct.getClass())
-//                .orElseThrow(() -> new Exception("Unsupported write type: " + type))
-//                .convert(construct, type);
-//        modifier.write(index, BasicConverter.smartCasting(converted, type));
+    public void write(int index, Construct construct) {
+        StructureModifier<Object> modifier = packet.getModifier();
+        Class type = modifier.getField(index).getType();
+        modifier.write(index, constructConverter.convert(construct, type));
     }
 }
