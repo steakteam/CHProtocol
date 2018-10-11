@@ -23,9 +23,9 @@ public class GetAllPackets extends CHProtocolFunction {
         CArray parent = new CArray(t);
         for (PacketType type : PacketType.values()) {
             CArray info = new CArray(t, 3);
-            info.set("protocol", type.getProtocol().getPacketName());
-            info.set("side", type.getSender().getPacketName());
-            info.set("name", type.name());
+            info.set("protocol", type.getProtocol().getPacketName().toUpperCase());
+            info.set("side", type.getSender().getPacketName().toUpperCase());
+            info.set("name", type.name().toUpperCase());
             parent.push(info, t);
         }
         return parent;
