@@ -3,8 +3,8 @@
 ProtocolLib wrapper for CommandHelper
 
 ## Functions
-### packet_create
-packet_create(protocol, side, name)
+### create_packet
+create_packet(protocol, side, name)
 ### packet_read
 packet_read([packet], index)
 ### packet_write
