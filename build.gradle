@@ -18,7 +18,7 @@ repositories {
     }
     maven {
         name = 'sk89q'
-        url = 'http://mvn2.sk89q.com/repo'
+        url = 'http://maven.sk89q.com/repo'
     }
     maven {
         name = 'protocollib'
