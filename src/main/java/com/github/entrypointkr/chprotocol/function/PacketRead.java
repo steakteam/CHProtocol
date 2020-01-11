@@ -37,7 +37,7 @@ public class PacketRead extends CHProtocolFunction {
         try {
             return packet.read(index, t);
         } catch (Exception ex) {
-            throw new CREException("Exception was thrown", t, ex);
+            throw new RuntimeException("Exception was thrown", ex);
         }
     }
 
