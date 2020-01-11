@@ -16,7 +16,7 @@ public final class CHProtocol extends AbstractExtension {
 
     @Override
     public Version getVersion() {
-        return new SimpleVersion(1, 0, 1);
+        return new SimpleVersion(1, 0, 2);
     }
 
     @Override

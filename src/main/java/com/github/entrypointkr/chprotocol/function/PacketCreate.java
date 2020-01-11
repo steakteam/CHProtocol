@@ -11,6 +11,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class PacketCreate extends CHProtocolFunction {
     }
 
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
         try {
             PacketContainer created = ProtocolLibrary.getProtocolManager().createPacket(PacketType.findCurrent(
                     PacketType.Protocol.valueOf(args.get(0).val().toUpperCase()),

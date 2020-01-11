@@ -4,6 +4,7 @@ import com.github.entrypointkr.chprotocol.event.internal.BindablePacketEvent;
 import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.events.BindableEvent;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 /**
  * Created by JunHyeong on 2018-09-20
@@ -26,7 +27,7 @@ public class CHPacketEvent extends CHProtocolBaseEvent {
     }
 
     @Override
-    public boolean modifyEvent(String s, Construct construct, BindableEvent bindableEvent) {
+    public boolean modifyEvent(String s, Mixed construct, BindableEvent bindableEvent) {
         return false;
     }
 }

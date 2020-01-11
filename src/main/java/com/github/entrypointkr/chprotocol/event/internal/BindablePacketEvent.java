@@ -8,11 +8,11 @@ import com.github.entrypointkr.chprotocol.event.MapWriter;
 import com.github.entrypointkr.chprotocol.event.PacketProvider;
 import com.github.entrypointkr.chprotocol.event.PrefilterMatcher;
 import com.laytonsmith.core.constructs.CString;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.events.BindableEvent;
 import com.laytonsmith.core.events.Prefilters;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
     }
 
     @Override
-    public boolean match(Map<String, Construct> prefilters) throws PrefilterNonMatchException {
+    public boolean match(Map<String, Mixed> prefilters) throws PrefilterNonMatchException {
         PacketType type = event.getPacketType();
         Prefilters.match(prefilters, "protocol", type.getProtocol().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
         Prefilters.match(prefilters, "side", type.getSender().getPacketName().toUpperCase(), Prefilters.PrefilterType.STRING_MATCH);
@@ -43,7 +43,7 @@ public class BindablePacketEvent implements BindableEvent, PrefilterMatcher, Map
     }
 
     @Override
-    public void write(Map<String, Construct> map) {
+    public void write(Map<String, Mixed> map) {
         PacketType type = event.getPacketType();
         Target target = Target.UNKNOWN;
         map.put("protocol", new CString(type.getProtocol().getPacketName().toUpperCase(), target));

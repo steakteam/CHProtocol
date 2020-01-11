@@ -12,6 +12,7 @@ import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CRERangeException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class PacketRead extends CHProtocolFunction {
     }
 
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
         PacketWrapper packet = args.size() == 1
                 ? PacketWrapper.of(env, t)
                 : PacketWrapper.of(args.remove(0), t);

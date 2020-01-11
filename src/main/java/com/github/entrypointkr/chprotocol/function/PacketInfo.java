@@ -11,6 +11,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -28,7 +29,7 @@ public class PacketInfo extends CHProtocolFunction {
     }
 
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
         PacketContainer packet = args.size() == 0
                 ? PacketWrapper.of(env, t).packet
                 : PacketWrapper.of(args.remove(0), t).packet;

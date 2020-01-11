@@ -10,6 +10,7 @@ import com.laytonsmith.core.exceptions.CRE.CRECastException;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 @api
 public class GetAllPackets extends CHProtocolFunction {
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
         CArray parent = new CArray(t);
         for (PacketType type : PacketType.values()) {
             CArray info = new CArray(t, 3);

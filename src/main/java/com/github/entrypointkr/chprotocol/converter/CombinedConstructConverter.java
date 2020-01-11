@@ -1,8 +1,8 @@
 package com.github.entrypointkr.chprotocol.converter;
 
 import com.github.entrypointkr.chprotocol.util.CombinedConverter;
-import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Type;
 
@@ -11,8 +11,8 @@ import java.lang.reflect.Type;
  */
 public class CombinedConstructConverter extends CombinedConverter<ConstructConverter, CombinedConstructConverter> implements ConstructConverter {
     @Override
-    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
-        Class type = construct.getClass();
-        return startConvert(type, converter -> converter.convert(ctx, construct, to, generic, t));
+    public Object convert(ConstructConverter ctx, Mixed mixed, Class<?> to, Type generic, Target t) {
+        Class type = mixed.getClass();
+        return startConvert(type, converter -> converter.convert(ctx, mixed, to, generic, t));
     }
 }

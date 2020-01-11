@@ -5,6 +5,7 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Type;
 
@@ -18,9 +19,9 @@ public class ChatComponentConverter implements DuplexConverter {
     }
 
     @Override
-    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
+    public Object convert(ConstructConverter ctx, Mixed mixed, Class<?> to, Type generic, Target t) {
         if (to == MinecraftReflection.getIChatBaseComponentClass()) {
-            String contents = construct.val();
+            String contents = mixed.val();
             if (contents.startsWith("{") && contents.endsWith("}")) {
                 return WrappedChatComponent.fromJson(contents).getHandle();
             } else {

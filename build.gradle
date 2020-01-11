@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
-group = pluginGroup
-version = pluginVersion
+group = 'com.github.entrypointkr'
+version = '1.0.2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -13,34 +13,22 @@ repositories {
         url = 'https://hub.spigotmc.org/nexus/content/groups/public/'
     }
     maven {
-        name = 'sonatype'
-        url = 'https://oss.sonatype.org/content/groups/public/'
-    }
-    maven {
         name = 'sk89q'
         url = 'http://maven.sk89q.com/repo'
     }
     maven {
         name = 'protocollib'
-        url = 'http://repo.dmulloy2.net/nexus/repository/public/'
+        url = 'https://repo.dmulloy2.net/nexus/repository/public/'
     }
 }
 
 dependencies {
-    compile('com.sk89q:commandhelper:3.3.2-SNAPSHOT') {
+    compileOnly('com.sk89q:commandhelper:3.3.4-SNAPSHOT') {
         exclude module: 'spigot-api'
     }
-    compile(group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.4.0-SNAPSHOT') {
+    compileOnly(group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.4.0') {
         exclude module: 'cglib-nodep'
     }
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT'
-}
-
-import org.apache.tools.ant.filters.ReplaceTokens
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [version: version]
-    }
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'org.spigotmc:spigot-api:1.13.1-R0.1-SNAPSHOT'
 }

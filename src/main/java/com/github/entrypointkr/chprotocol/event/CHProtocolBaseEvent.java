@@ -1,7 +1,7 @@
 package com.github.entrypointkr.chprotocol.event;
 
 import com.laytonsmith.PureUtilities.Version;
-import com.laytonsmith.core.CHVersion;
+import com.laytonsmith.core.MSVersion;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
@@ -13,6 +13,7 @@ import com.laytonsmith.core.events.BoundEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.exceptions.EventException;
 import com.laytonsmith.core.exceptions.PrefilterNonMatchException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ public abstract class CHProtocolBaseEvent extends AbstractEvent {
     public abstract boolean match(BindableEvent bindableEvent);
 
     @Override
-    public boolean matches(Map<String, Construct> map, BindableEvent bindableEvent) throws PrefilterNonMatchException {
+    public boolean matches(Map<String, Mixed> map, BindableEvent bindableEvent) throws PrefilterNonMatchException {
         if (match(bindableEvent)) {
             if (bindableEvent instanceof PrefilterMatcher) {
                 PrefilterMatcher matcher = ((PrefilterMatcher) bindableEvent);
@@ -37,10 +38,10 @@ public abstract class CHProtocolBaseEvent extends AbstractEvent {
     }
 
     @Override
-    public Map<String, Construct> evaluate(BindableEvent bindableEvent) throws EventException {
+    public Map<String, Mixed> evaluate(BindableEvent bindableEvent) throws EventException {
         if (bindableEvent instanceof MapWriter) {
             MapWriter writer = ((MapWriter) bindableEvent);
-            Map<String, Construct> ret = new HashMap<>();
+            Map<String, Mixed> ret = new HashMap<>();
             writer.write(ret);
             return ret;
         }
@@ -59,7 +60,7 @@ public abstract class CHProtocolBaseEvent extends AbstractEvent {
 
     @Override
     public Version since() {
-        return CHVersion.V3_3_2;
+        return MSVersion.V3_3_2;
     }
 
     @Override

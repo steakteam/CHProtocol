@@ -14,6 +14,7 @@ import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.exceptions.CRE.CREPlayerOfflineException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 @api
 public class PacketSend extends CHProtocolFunction {
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
         MCPlayer player = args.size() >= 2
                 ? Static.GetPlayer(args.remove(0), t)
                 : Static.getPlayer(env, t);

@@ -20,6 +20,7 @@ import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.environments.GlobalEnv;
 import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -71,11 +72,11 @@ public class PacketWrapper extends Construct {
         throw new CREException("", target);
     }
 
-    public static PacketWrapper of(Construct construct, Target target) {
-        if (construct instanceof PacketWrapper) {
-            return ((PacketWrapper) construct);
+    public static PacketWrapper of(Mixed mixed, Target target) {
+        if (mixed instanceof PacketWrapper) {
+            return ((PacketWrapper) mixed);
         } else {
-            throw new CREIllegalArgumentException(String.format("Expecting a PacketWrapper, but %s was found.", construct), target);
+            throw new CREIllegalArgumentException(String.format("Expecting a PacketWrapper, but %s was found.", mixed), target);
         }
     }
 
@@ -94,9 +95,9 @@ public class PacketWrapper extends Construct {
         return objectConverter.convert(objectConverter, object, target);
     }
 
-    public void write(int index, Construct construct, Target target) {
+    public void write(int index, Mixed mixed, Target target) {
         StructureModifier<Object> modifier = packet.getModifier();
         Field field = modifier.getField(index);
-        modifier.write(index, constructConverter.convert(constructConverter, construct, field.getType(), field.getGenericType(), target));
+        modifier.write(index, constructConverter.convert(constructConverter, mixed, field.getType(), field.getGenericType(), target));
     }
 }

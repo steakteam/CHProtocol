@@ -12,6 +12,7 @@ import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class PacketWrite extends CHProtocolFunction {
     }
 
     @Override
-    public Construct exec(Target t, Environment env, List<Construct> args) throws ConfigRuntimeException {
-        PacketWrapper packet = args.size() == 1
+    public Construct exec(Target t, Environment env, List<Mixed> args) throws ConfigRuntimeException {
+        PacketWrapper packet = args.size() == 2
                 ? PacketWrapper.of(env, t)
                 : PacketWrapper.of(args.remove(0), t);
         int index = Static.getInt32(args.remove(0), t);
-        Construct argument = args.remove(0);
+        Mixed argument = args.remove(0);
         try {
             packet.write(index, argument, t);
         } catch (Exception ex) {

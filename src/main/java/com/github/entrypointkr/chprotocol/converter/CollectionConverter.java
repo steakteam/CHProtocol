@@ -4,6 +4,7 @@ import com.google.gson.internal.$Gson$Types;
 import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -52,16 +53,16 @@ public class CollectionConverter implements DuplexConverter {
     }
 
     @Override
-    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
+    public Object convert(ConstructConverter ctx, Mixed mixed, Class<?> to, Type generic, Target t) {
         Type[] generics = $Gson$Types.getMapKeyAndValueTypes(generic, to);
         Class keyType = (Class) generics[0];
         Class valueType = (Class) generics[1];
-        if (construct instanceof CArray) {
-            CArray array = ((CArray) construct);
+        if (mixed instanceof CArray) {
+            CArray array = ((CArray) mixed);
             if (Map.class.isAssignableFrom(to)) {
                 Map<Object, Object> map = createMap(to);
-                for (Construct key : array.keySet()) {
-                    Construct value = array.get(key, t);
+                for (Mixed key : array.keySet()) {
+                    Mixed value = array.get(key, t);
                     Object convertedKey = ctx.convert(ctx, key, keyType, keyType.getGenericSuperclass(), t);
                     Object convertedValue = ctx.convert(ctx, value, valueType, valueType.getGenericSuperclass(), t);
                     map.put(convertedKey, convertedValue);
@@ -70,7 +71,7 @@ public class CollectionConverter implements DuplexConverter {
             } else if (Collection.class.isAssignableFrom(to)) {
                 Collection<Object> collection = createCollection(to);
                 for (int i = 0; i < array.size(); i++) {
-                    Construct value = array.get(i, t);
+                    Mixed value = array.get(i, t);
                     Object convertedValue = ctx.convert(ctx, value, valueType, valueType.getGenericSuperclass(), t);
                     collection.add(convertedValue);
                 }

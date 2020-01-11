@@ -8,6 +8,7 @@ import com.laytonsmith.core.constructs.CNull;
 import com.laytonsmith.core.constructs.CString;
 import com.laytonsmith.core.constructs.Construct;
 import com.laytonsmith.core.constructs.Target;
+import com.laytonsmith.core.natives.interfaces.Mixed;
 
 import java.lang.reflect.Type;
 
@@ -40,26 +41,26 @@ public class BasicConverter implements DuplexConverter {
     private BasicConverter() {
     }
 
-    public Object basicConvert(Construct construct) {
-        if (construct instanceof CBoolean) {
-            return ((CBoolean) construct).getBoolean();
-        } else if (construct instanceof CByteArray) {
-            return ((CByteArray) construct).asByteArrayCopy();
-        } else if (construct instanceof CDouble) {
-            return ((CDouble) construct).getDouble();
-        } else if (construct instanceof CInt) {
-            return ((CInt) construct).getInt();
-        } else if (construct instanceof CNull) {
+    public Object basicConvert(Mixed mixed) {
+        if (mixed instanceof CBoolean) {
+            return ((CBoolean) mixed).getBoolean();
+        } else if (mixed instanceof CByteArray) {
+            return ((CByteArray) mixed).asByteArrayCopy();
+        } else if (mixed instanceof CDouble) {
+            return ((CDouble) mixed).getDouble();
+        } else if (mixed instanceof CInt) {
+            return ((CInt) mixed).getInt();
+        } else if (mixed instanceof CNull) {
             return null;
-        } else if (construct instanceof CString) {
-            return construct.val();
+        } else if (mixed instanceof CString) {
+            return mixed.val();
         }
         return null;
     }
 
     @Override
-    public Object convert(ConstructConverter ctx, Construct construct, Class to, Type generic, Target t) {
-        return smartCasting(basicConvert(construct), to);
+    public Object convert(ConstructConverter ctx, Mixed mixed, Class<?> to, Type generic, Target t) {
+        return smartCasting(basicConvert(mixed), to);
     }
 
     @Override
