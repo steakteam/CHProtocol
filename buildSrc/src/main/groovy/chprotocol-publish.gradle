@@ -1,0 +1,5 @@
+plugins {
+    id 'groovy'
+}
+
+task setVersion(type: kr.entree.chprotocol.build.VersionTask)
