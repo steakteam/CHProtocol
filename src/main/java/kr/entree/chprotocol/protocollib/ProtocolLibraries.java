@@ -1,11 +1,11 @@
-package kr.entree.chprotocol.external;
+package kr.entree.chprotocol.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
-import com.laytonsmith.core.constructs.CArray;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
+import kr.entree.chprotocol.data.PacketKind;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 
@@ -27,7 +27,7 @@ public class ProtocolLibraries {
     public PacketType findPacketType(String protocol, String side, String name, Target target) {
         val packetSide = getSide(side, target);
         try {
-            return PacketType.findCurrent(PacketType.Protocol.valueOf(protocol), packetSide, name);
+             return PacketType.findCurrent(PacketType.Protocol.valueOf(protocol), packetSide, name);
         } catch (Exception exception) {
             throw new CREIllegalArgumentException("Error while finding the packet.", target, exception);
         }
@@ -37,16 +37,8 @@ public class ProtocolLibraries {
         return ProtocolLibrary.getProtocolManager().createPacket(findPacketType(protocol, side, name, target));
     }
 
-    public CArray getTypeArray(PacketType type, Target target) {
-        val typeInfo = new CArray(target, 3);
-        typeInfo.set("protocol", type.getProtocol().name());
-        typeInfo.set("side", type.getSender().getPacketName().toUpperCase());
-        typeInfo.set("name", type.name().toUpperCase());
-        return typeInfo;
-    }
-
-    public String getTypeName(PacketType type) {
-        return String.format("%s_%s_%s",
+    public PacketKind getPacketKind(PacketType type) {
+        return new PacketKind(
                 type.getProtocol().name(),
                 type.getSender().getPacketName().toUpperCase(),
                 type.name().toUpperCase()

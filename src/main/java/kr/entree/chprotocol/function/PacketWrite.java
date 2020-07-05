@@ -1,5 +1,6 @@
 package kr.entree.chprotocol.function;
 
+import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.constructs.CVoid;
 import com.laytonsmith.core.constructs.Target;
@@ -9,13 +10,14 @@ import com.laytonsmith.core.exceptions.CRE.CREIllegalArgumentException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.natives.interfaces.Mixed;
-import kr.entree.chprotocol.CPacket;
+import kr.entree.chprotocol.data.CPacket;
 import kr.entree.chprotocol.Mixes;
 import lombok.val;
 
 /**
  * Created by JunHyung Im on 2020-07-05
  */
+@api
 public class PacketWrite extends CHProtocolFunction {
     @Override
     public Class<? extends CREThrowable>[] thrown() {

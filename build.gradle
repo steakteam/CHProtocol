@@ -2,7 +2,7 @@ import kr.entree.chprotocol.build.VersionTask
 
 plugins {
     id 'java'
-    id 'kr.entree.spigradle.base' version '1.3.1'
+    id 'kr.entree.spigradle' version '2.0.0'
     id 'chprotocol-publish'
 }
 
@@ -25,4 +25,27 @@ dependencies {
     compileOnly lombok()
     annotationProcessor lombok()
     testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+generateSpigotDescription.enabled = false
+
+spigot.depends = ['ProtocolLib']
+
+def getPluginsDir() { new File(spigot.debug.serverDirectory, 'plugins') }
+
+task downloadCommandHelper(type: kr.entree.spigradle.module.common.Download) {
+    source = 'https://ci.enginehub.org/repository/download/bt12/lastSuccessful/commandhelper-3.3.4-SNAPSHOT-full.jar?branch=master&guest=1'
+    destination = new File(pluginsDir, 'CommandHelper.jar')
+}
+
+prepareSpigotPlugins {
+    dependsOn(downloadCommandHelper)
+    doLast {
+        copy {
+            from("$buildDir/libs") {
+                include("*.jar")
+            }
+            into("$pluginsDir/CommandHelper/extensions")
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package kr.entree.chprotocol;
+package kr.entree.chprotocol.data;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
@@ -11,9 +11,10 @@ import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
 import com.laytonsmith.core.exceptions.CRE.CREException;
 import com.laytonsmith.core.natives.interfaces.Mixed;
-import kr.entree.chprotocol.conversion.Conversions;
+import kr.entree.chprotocol.Conversions;
 import kr.entree.chprotocol.event.CPacketEvent;
-import kr.entree.chprotocol.external.ProtocolLibraries;
+import kr.entree.chprotocol.protocollib.ProtocolLibraries;
+import lombok.val;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -52,8 +53,8 @@ public class CPacket extends Construct {
         return packet.getModifier().read(index);
     }
 
-    public Mixed readMixed(int index) {
-        return Conversions.convertObjectToMixed(read(index));
+    public Mixed readMixed(int index, Target target) {
+        return Conversions.convertObjectToMixed(read(index), target);
     }
 
     public void write(int index, Object object) {
@@ -61,7 +62,8 @@ public class CPacket extends Construct {
     }
 
     public void writeMixed(int index, Mixed mixed) {
-        write(index, Conversions.convertMixedToObject(mixed));
+        val field = packet.getModifier().getField(index);
+        write(index, Conversions.convertMixedToObject(mixed, field.getType()));
     }
 
     public CArray getFields(Target target) {
@@ -79,15 +81,11 @@ public class CPacket extends Construct {
                     packet
             );
         } catch (InvocationTargetException e) {
-            throw new CREException("Error while sending the packet " + getTypeName(), target, e);
+            throw new CREException("Error while sending the packet " + getKind(), target, e);
         }
     }
 
-    public String getTypeName() {
-        return ProtocolLibraries.getTypeName(packet.getType());
-    }
-
-    public CArray getTypeArray(Target target) {
-        return ProtocolLibraries.getTypeArray(packet.getType(), target);
+    public PacketKind getKind() {
+        return ProtocolLibraries.getPacketKind(packet.getType());
     }
 }

@@ -1,5 +1,6 @@
 package kr.entree.chprotocol.function;
 
+import com.laytonsmith.annotations.api;
 import com.laytonsmith.core.ArgumentValidation;
 import com.laytonsmith.core.constructs.Target;
 import com.laytonsmith.core.environments.Environment;
@@ -9,13 +10,14 @@ import com.laytonsmith.core.exceptions.CRE.CRERangeException;
 import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.natives.interfaces.Mixed;
-import kr.entree.chprotocol.CPacket;
 import kr.entree.chprotocol.Mixes;
+import kr.entree.chprotocol.data.CPacket;
 import lombok.val;
 
 /**
  * Created by JunHyung Im on 2020-07-05
  */
+@api
 public class PacketRead extends CHProtocolFunction {
     @Override
     public Class<? extends CREThrowable>[] thrown() {
@@ -31,7 +33,7 @@ public class PacketRead extends CHProtocolFunction {
                 ? CPacket.create(environment, t)
                 : Mixes.packet(args[index++], t);
         val readIndex = ArgumentValidation.getInt32(args[index], t);
-        return packet.readMixed(readIndex);
+        return packet.readMixed(readIndex, t);
     }
 
     @Override

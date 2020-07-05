@@ -8,7 +8,7 @@ import com.laytonsmith.core.exceptions.CRE.CREThrowable;
 import com.laytonsmith.core.exceptions.ConfigRuntimeException;
 import com.laytonsmith.core.natives.interfaces.Mixed;
 import kr.entree.chprotocol.Mixes;
-import kr.entree.chprotocol.CPacket;
+import kr.entree.chprotocol.data.CPacket;
 import lombok.val;
 
 /**
