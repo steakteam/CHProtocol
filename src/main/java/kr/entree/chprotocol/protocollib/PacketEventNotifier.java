@@ -1,32 +1,33 @@
-package com.github.entrypointkr.chprotocol;
+package kr.entree.chprotocol.protocollib;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import com.github.entrypointkr.chprotocol.event.internal.BindablePacketEvent;
 import com.laytonsmith.core.events.Driver;
 import com.laytonsmith.core.events.EventUtils;
+import kr.entree.chprotocol.event.ProtocolLibPacketEvent;
+import lombok.val;
 import org.bukkit.plugin.Plugin;
 
 /**
- * Created by JunHyeong on 2018-09-19
+ * Created by JunHyung Im on 2020-07-05
  */
-public class PacketProcessor extends PacketAdapter {
-    public PacketProcessor(Plugin plugin) {
+public class PacketEventNotifier extends PacketAdapter {
+    public PacketEventNotifier(Plugin plugin) {
         super(plugin, PacketType.values());
     }
 
     @Override
     public void onPacketReceiving(PacketEvent event) {
-        BindablePacketEvent e = new BindablePacketEvent(event);
-        EventUtils.TriggerListener(Driver.EXTENSION, "packet_event", e);
+        val packetEvent = new ProtocolLibPacketEvent(event);
+        EventUtils.TriggerListener(Driver.EXTENSION, "packet_event", packetEvent);
     }
 
     @Override
     public void onPacketSending(PacketEvent event) {
-        BindablePacketEvent e = new BindablePacketEvent(event);
-        EventUtils.TriggerListener(Driver.EXTENSION, "packet_event", e);
+        val packetEvent = new ProtocolLibPacketEvent(event);
+        EventUtils.TriggerListener(Driver.EXTENSION, "packet_event", packetEvent);
     }
 
     public void register() {

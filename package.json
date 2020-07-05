@@ -42,7 +42,7 @@
         "@semantic-release/exec",
         {
           "prepareCmd": "./gradlew setVersion --build-version ${nextRelease.version}",
-          "publishCmd": "./gradlew assemble"
+          "publishCmd": "./gradlew clean jar"
         }
       ],
       [
@@ -59,6 +59,17 @@
         {
           "assets": [
             "build/libs/*.jar"
+          ]
+        }
+      ],
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "releaseRules": [
+            {
+              "type": "refactor",
+              "release": "minor"
+            }
           ]
         }
       ]

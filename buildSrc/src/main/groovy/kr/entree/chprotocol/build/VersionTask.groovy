@@ -7,7 +7,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
 /**
- * Created by JunHyung Lim on 2020-07-02
+ * Created by JunHyung Im on 2020-07-02
  */
 class VersionTask extends DefaultTask {
     static File getVersionFile(Project project) {
