@@ -25,5 +25,6 @@ class VersionTask extends DefaultTask {
     @TaskAction
     def execute() {
         getVersionFile(project).text = version
+        project.version = version
     }
 }

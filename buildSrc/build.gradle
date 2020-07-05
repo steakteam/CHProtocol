@@ -1,3 +1,12 @@
 plugins {
     id 'groovy-gradle-plugin'
 }
+
+repositories {
+    jcenter()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation 'kr.entree:spigradle:2.0.0'
+}

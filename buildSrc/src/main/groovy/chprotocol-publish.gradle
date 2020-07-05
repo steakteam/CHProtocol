@@ -3,3 +3,23 @@ plugins {
 }
 
 task setVersion(type: kr.entree.chprotocol.build.VersionTask)
+
+task generateProjectMeta {
+    group = "chprotocol build"
+    def parent = sourceSets["main"].output.generatedSourcesDirs[0]
+    def metaFile = file("$parent/kr/entree/chprotocol/BuildMeta.java")
+    inputs.files(metaFile)
+    doLast {
+        metaFile.parentFile.mkdirs()
+        metaFile.write("""
+            package kr.entree.chprotocol;
+            
+            public class BuildMeta {
+                public static final String VERSION = "${project.version}";
+            }
+        """.stripIndent())
+    }
+    sourceSets.main.java.srcDirs(parent)
+}
+
+compileJava.dependsOn(generateProjectMeta)
