@@ -20,6 +20,9 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+import static kr.entree.chprotocol.Conversions.adjustObject;
+import static kr.entree.chprotocol.Conversions.convertMixedToObject;
+
 /**
  * Created by JunHyung Im on 2020-07-05
  */
@@ -63,7 +66,8 @@ public class CPacket extends Construct {
 
     public void writeMixed(int index, Mixed mixed) {
         val field = packet.getModifier().getField(index);
-        write(index, Conversions.convertMixedToObject(mixed, field.getType()));
+        Class<?> type = field.getType();
+        write(index, adjustObject(convertMixedToObject(mixed, type), type));
     }
 
     public CArray getFields(Target target) {

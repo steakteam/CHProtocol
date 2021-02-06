@@ -8,7 +8,7 @@ task generateProjectMeta {
     group = "chprotocol build"
     def parent = sourceSets["main"].output.generatedSourcesDirs[0]
     def metaFile = file("$parent/kr/entree/chprotocol/BuildMeta.java")
-    doLast {
+    doFirst {
         metaFile.parentFile.mkdirs()
         metaFile.write("""
             package kr.entree.chprotocol;
